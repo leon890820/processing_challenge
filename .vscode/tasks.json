@@ -12,19 +12,19 @@
         "command": "C:\\Users\\USER\\Desktop\\processing-3.5.3\\processing-java.exe",
         "presentation": {
             "echo": true,
-            "reveal": "always",
+            "reveal"AIsnake
             "focus": false,
             "panel": "dedicated"
         },
         "args": [
             "--force",
-            "--sketch=${workspaceRoot}",
-            "--output=${workspaceRoot}/out",
+            "--sketch=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\fourth_demension",
+            "--output=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\fourth_demension/out",
             "--run"],
             "windows": {
                 "args": [ "--force",
-                "--sketch=${workspaceRoot}",
-                "--output=${workspaceRoot}\\out",
+                "--sketch=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\fourth_demension",
+                "--output=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\fourth_demension\\out",
                 "--run"]
             }
         }
