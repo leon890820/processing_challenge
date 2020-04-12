@@ -25,7 +25,7 @@ void setup() {
 
 void draw() {
     
-    translate(0,height/2);
+    translate(width/2,height/2);
     rotateX(-PI/2);
     float[][] rotationXY={
         {cos(angel),-sin(angel),0,0},
@@ -53,7 +53,7 @@ void draw() {
     };
     
     background(0);
-    translate(width/2,height/2);
+    //translate(width/2,height/2);
     stroke(255);
     strokeWeight(8);
     noFill();
