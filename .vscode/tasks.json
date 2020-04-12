@@ -12,7 +12,7 @@
         "command": "C:\\Users\\USER\\Desktop\\processing-3.5.3\\processing-java.exe",
         "presentation": {
             "echo": true,
-            "reveal"AIsnake
+            "reveal": "always",
             "focus": false,
             "panel": "dedicated"
         },

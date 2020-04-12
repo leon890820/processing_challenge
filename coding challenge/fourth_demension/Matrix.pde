@@ -8,11 +8,12 @@
 // Matrix Multiplication
 // https://youtu.be/tzsgS19RRc8
 
-float[][] vecToMatrix(PVector v) {
-  float[][] m = new float[3][1];
+float[][] vecToMatrix(P4Vector v) {
+  float[][] m = new float[4][1];
   m[0][0] = v.x;
   m[1][0] = v.y;
   m[2][0] = v.z;
+  m[3][0] = v.w;
   return m;
 }
 
@@ -23,6 +24,15 @@ PVector matrixToVec(float[][] m) {
   if (m.length > 2) {
     v.z = m[2][0];
   }
+  return v;
+}
+P4Vector matrixToVec4(float[][] m) {
+  P4Vector v = new P4Vector(0,0,0,0);
+  v.x = m[0][0];
+  v.y = m[1][0];
+  
+  v.z = m[2][0];
+  v.w=m[3][0];
   return v;
 }
 
@@ -41,10 +51,18 @@ void logMatrix(float[][] m) {
 }
 
 
-PVector matmul(float[][] a, PVector b) {
+PVector matmul(float[][] a, P4Vector b) {
   float[][] m = vecToMatrix(b);
+  
   return matrixToVec(matmul(a,m));
 }
+
+P4Vector matmul(float[][] a, P4Vector b,boolean fourth) {
+  float[][] m = vecToMatrix(b);
+  
+  return matrixToVec4(matmul(a,m));
+}
+
 
 float[][] matmul(float[][] a, float[][] b) {
   int colsA = a[0].length;
