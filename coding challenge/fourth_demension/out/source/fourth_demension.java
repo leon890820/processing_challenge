@@ -86,7 +86,7 @@ public void draw() {
             {0,0,w,0}
         };
         PVector projected3d=matmul(projection,rotated);
-        projected3d.mult(100);
+        projected3d.mult(50);
 
        
 
