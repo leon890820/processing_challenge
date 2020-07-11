@@ -26,7 +26,7 @@ void setup(){
   //print(nn.Feedforward(p[0][0]).m1[0][0]+"\n");
   //print(nn.Feedforward(p[1][0]).m1[0][0]+"\n");
   //print(nn.Feedforward(p[2][0]).m1[0][0]+"\n");
- // print(nn.Feedforward(p[3][0]).m1[0][0]+"\n");
+  //print(nn.Feedforward(p[3][0]).m1[0][0]+"\n");
   //nn.Feedforward(a);
   //text(nn.output.m1[0][0],width/2,height/2);
   /*

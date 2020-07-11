@@ -127,9 +127,7 @@ void selection(){
     }
   }
 }
-void generate(){
-  
-  
+void generate(){ 
     for(int i=0;i<s.length;i+=1){
       float aaa=random(10);
       float bbb=random(10);
