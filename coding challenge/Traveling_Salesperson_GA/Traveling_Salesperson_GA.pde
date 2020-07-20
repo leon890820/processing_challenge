@@ -1,10 +1,10 @@
-int citynum=8;
-int populationsnum=10;
+int citynum=12;
+int populationsnum=100;
 PVector[] cities = new PVector[citynum];
 int[] best = new int[citynum];
 int[] vals=new int[citynum];
 int[] orders = new int[citynum];
-int[][] populations=new int[populationsnum][];
+int[][] populations=new int[populationsnum][citynum];
 boolean finish = false;
 float record;
 float total;
@@ -18,18 +18,21 @@ void setup() {
     for (int i = 0; i < citynum; i+=1) {
         vals[i]=i;
     }
-    record = calcDistance(cities);
+    
     arrayCopy(vals, best);
     total=factorial(citynum);
     for(int i=0;i<citynum;i+=1){
         orders[i]=i;
     }
     for(int i=0;i<populationsnum;i+=1){
-        populations[i]=shuffle(orders);
-    }
-    println(populations[0]);
+        arrayCopy(shuffles(orders),populations[i]);        
+    }    
+    selectbest();
+    
     
 }
+
+
 
 void draw() { 
     background(0);   
@@ -39,15 +42,8 @@ void draw() {
         circle(cities[i].x,cities[i].y,10);
         text(i,cities[i].x,cities[i].y-20);
     }
-    stroke(255);
-    beginShape();
-    noFill();
-    strokeWeight(2);
-    for (int i = 0; i < cities.length; i+=1) {
-        vertex(cities[vals[i]].x, cities[vals[i]].y);
-    }
-    endShape();
-
+    evolution();
+    selectbest();
     beginShape();
     stroke(255,0,255);
     noFill();
@@ -56,13 +52,8 @@ void draw() {
         vertex(cities[best[i]].x,cities[best[i]].y);
     }
     endShape();
-
+    //println(best);
         
-    float d=calcDistance(cities);
-    if (d<record){
-        record=d;
-        arrayCopy(vals, best);
-    }
     
         
     
@@ -79,10 +70,10 @@ int[] swap(int[] a,int i,int j){
     return a;
 }
 
-float calcDistance(PVector[] points){
+float calcDistance(PVector[] points,int[] order){
     float sum=0;
     for( int i=0; i<points.length-1; i+=1 ){
-        float d=dist(points[vals[i]].x, points[vals[i]].y, points[vals[i+1]].x, points[vals[i+1]].y);
+        float d=dist(points[order[i]].x, points[order[i]].y, points[order[i+1]].x, points[order[i+1]].y);
         sum+=d;
     }
     return sum;
@@ -94,7 +85,7 @@ float factorial(float a){
     else return a*factorial(a-1);
 
 }
-int[] shuffle(int[] order){
+int[] shuffles(int[] order){
     
     for(int i=0;i<100;i+=1){
         int i1=int(random(order.length));
@@ -104,4 +95,72 @@ int[] shuffle(int[] order){
     }
     
     return order;
+}
+
+void evolution(){
+    float[] score=new float[populationsnum];
+    for(int i=0;i<score.length;i+=1){
+        score[i]=1/(calcDistance(cities,populations[i])+1);
+    }
+    float sum=0;
+    for(int i=0;i<score.length;i+=1){
+      sum+=score[i];
+    }
+    for(int i=0;i<score.length;i+=1){
+      score[i]=score[i]/sum;
+    }
+    //print(sum+"\n");
+    selection(score);
+
+}
+
+void selection(float[] score){
+    float low=0;
+    float[] sc=new float[score.length+1];
+    sc[0]=0;
+    for(int i=0;i<score.length;i+=1){
+        low+=score[i];
+        sc[i+1]=low;
+    }
+    int[][] newpopulations=new int[populationsnum][citynum];
+    for(int i=0;i<populationsnum;i+=1){
+        float r=random(1);
+        
+        for(int j =0;j<score.length;j+=1){
+            if(sc[j]<=r && r<=sc[j+1]){
+                arrayCopy(populations[j],newpopulations[i]);
+                //println(newpopulations[i]);
+                break;
+            }
+        }
+       
+      
+    }
+    //println(score);
+    
+    //println(newpopulations[0]);
+    arrayCopy(newpopulations,populations);
+    mutate(0.1);
+       
+}
+void mutate(float rate){
+      for(int i=0;i<populationsnum;i+=1){
+          if(random(1)<rate){
+              int indexA=(int)random(orders.length);
+              int indexB=(int)random(orders.length);
+              populations[i]=swap(populations[i],indexA,indexB);
+          }
+    }
+}
+void selectbest(){
+    float record=10000000;
+    for(int i=0;i<populationsnum;i+=1){
+        float d=calcDistance(cities,populations[i]);
+        
+        if (d<record){
+            record=d;
+            arrayCopy(populations[i],best);
+            
+        }
+    }
 }
