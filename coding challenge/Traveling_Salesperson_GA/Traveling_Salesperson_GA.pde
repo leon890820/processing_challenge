@@ -1,4 +1,4 @@
-int citynum=12;
+int citynum=15;
 int populationsnum=100;
 PVector[] cities = new PVector[citynum];
 int[] best = new int[citynum];
