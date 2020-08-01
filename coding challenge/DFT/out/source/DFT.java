@@ -19,11 +19,14 @@ float time=0;
 int num=100;
 FloatList p;
 FloatList p1;
-float[] wa={100,100,100,-100,-100,-100,100,100,100,-100,-100,-100};
+float[] wa=new float[100];
 float[][] wave;
 PVector location=new PVector(0,0);
 
 public void setup(){
+  for(int i=0;i<wa.length;i+=1){
+    wa[i]=i;
+  }
   
   wave=dft(wa);
   p=new FloatList();
@@ -35,14 +38,19 @@ public void draw(){
   translate(200,200);
   float x=0;
   float y=0;
-  for(int i=1;i<=num;i+=1){
-    circle(x,y,2*r/(2*i-1));
-    float fx=x+r*cos((2*i-1)*time)/(2*i-1);
-    float fy=y+r*sin((2*i-1)*time)/(2*i-1);
+  for(int i=0;i<wave.length;i+=1){
+
+    float radious=wave[i][4];
+    float angle=wave[i][3];
+    float feq=wave[i][2];
+    circle(x,y,2*radious);
+    float fx=x+radious*sin(feq*time+angle);
+    float fy=y+radious*cos(feq*time+angle);
     line(x,y,fx,fy);
     x=fx;
     y=fy; 
   }
+  //println(wave[2]);
   fill(255);
   circle(x,y,8);
   location=new PVector(x,y);
@@ -67,12 +75,12 @@ public void draw(){
   }
   
   
-  
-  time-=0.02f;
-  //if(time<=-2*PI){
-  //  time=0;
-  //  num+=1;
-  //}
+  float dt=2*PI/wave.length;
+  time+=dt;
+  if(time>=2*PI){
+   time=0;
+   num+=1;
+  }
 }
 
 public float[][] dft(float[] y){
@@ -90,11 +98,14 @@ public float[][] dft(float[] y){
     im=im/N;
     X[k][0]=re;
     X[k][1]=im;
+
+    float radious=sqrt(re*re+im*im);
+    float angle = atan2(im,re);
+    float feq=k;
+    X[k][2]=feq;
+    X[k][3]=angle;
+    X[k][4]=radious;
   }
-  
-  
-  
-  
   return X;
 }
   public void settings() {  size(800,400); }
