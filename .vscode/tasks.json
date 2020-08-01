@@ -18,13 +18,13 @@
         },
         "args": [
             "--force",
-            "--sketch=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\Traveling_Salesperson_GA",
-            "--output=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\Traveling_Salesperson_GA/out",
+            "--sketch=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\DFT",
+            "--output=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\DFT/out",
             "--run"],
             "windows": {
                 "args": [ "--force",
-                "--sketch=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\Traveling_Salesperson_GA",
-                "--output=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\Traveling_Salesperson_GA\\out",
+                "--sketch=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\DFT",
+                "--output=C:\\Users\\USER\\Documents\\GitHub\\processing_challenge\\coding challenge\\DFT\\out",
                 "--run"]
             }
         }
