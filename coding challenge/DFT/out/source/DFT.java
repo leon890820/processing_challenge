@@ -17,65 +17,50 @@ public class DFT extends PApplet {
 float r=100;
 float time=0;
 int num=100;
-FloatList p;
-FloatList p1;
-float[] wa=new float[100];
-float[][] wave;
-PVector location=new PVector(0,0);
+ArrayList<PVector> p;
+ArrayList<PVector> p1;
+float[] wa1=new float[100];
+float[] wa2=new float[100];
+float[][] fouriesX;
+float[][] fouriesY;
+
 
 public void setup(){
-  for(int i=0;i<wa.length;i+=1){
-    wa[i]=i;
+  for(int i=0;i<wa1.length;i+=1){
+    float m=map(i,0,100,0,2*PI);
+    wa1[i]=50*cos(m);
+    wa2[i]=50*sin(m);
   }
   
-  wave=dft(wa);
-  p=new FloatList();
+  fouriesX=dft(wa1);
+  fouriesY=dft(wa2);
+  p=new ArrayList<PVector>();
   //println(wave[6]);
 }
 
 public void draw(){
   background(0);
-  translate(200,200);
-  float x=0;
-  float y=0;
-  for(int i=0;i<wave.length;i+=1){
-
-    float radious=wave[i][4];
-    float angle=wave[i][3];
-    float feq=wave[i][2];
-    circle(x,y,2*radious);
-    float fx=x+radious*sin(feq*time+angle);
-    float fy=y+radious*cos(feq*time+angle);
-    line(x,y,fx,fy);
-    x=fx;
-    y=fy; 
-  }
-  //println(wave[2]);
-  fill(255);
-  circle(x,y,8);
-  location=new PVector(x,y);
   
+  PVector locationX=epiCycle(50,200,PI/2,fouriesX);
+  PVector locationY=epiCycle(0,0,0,fouriesY);
+  PVector location=new PVector(locationX.x,locationY.y);
+  p.add(location);
   
-  
-  p.append(location.y);
-  p1=p.copy();
-  p1.reverse();
   stroke(255);
-  line(location.x,location.y,200,p1.get(0));
-  translate(200,0);
+  line(locationX.x,locationX.y,p.get(p.size()-1).x,p.get(p.size()-1).y);
   noFill();
   stroke(255);
   beginShape();
-  for(int i=0;i<p1.size();i+=1){
-    vertex(i,p1.get(i));
+  for(int i=0;i<p.size();i+=1){
+    vertex(p.get(i).x,p.get(i).y);
   }
   endShape();
-  if(p.size()>500){
-    p.remove(0);
-  }
+  // if(p.size()>500){
+  //   p.remove(0);
+  // }
   
   
-  float dt=2*PI/wave.length;
+  float dt=2*PI/wa1.length;
   time+=dt;
   if(time>=2*PI){
    time=0;
@@ -107,6 +92,30 @@ public float[][] dft(float[] y){
     X[k][4]=radious;
   }
   return X;
+}
+
+public PVector epiCycle(float _x, float _y,float theda,float[][] fouries){
+  translate(_x,_y);
+  float x=0;
+  float y=0;
+  for(int i=0;i<fouries.length;i+=1){
+    noFill();
+    float radious=fouries[i][4];
+    float angle=fouries[i][3];
+    float feq=fouries[i][2];
+    circle(x,y,2*radious);
+    float fx=x+radious*cos(feq*time+angle+theda);
+    float fy=y+radious*sin(feq*time+angle+theda);
+    line(x,y,fx,fy);
+    x=fx;
+    y=fy; 
+  }
+  //println(wave[2]);
+  fill(255);
+  circle(x+x_,y+y_,8);
+  PVector location=new PVector(x,y);
+  return location;
+
 }
   public void settings() {  size(800,400); }
   static public void main(String[] passedArgs) {
