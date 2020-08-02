@@ -103,3 +103,13 @@ PVector epiCycle(float _x, float _y,float theda,float[][] fouries){
   return location;
 
 }
+void loadTrain() {
+  JSONArray train = loadJSONObject("train.json").getJSONArray("drawing");
+  trainX = new float[train.size()/skip];
+  trainY = new float[train.size()/skip];
+
+  for (int i = 0; i < train.size()/skip; i+= 1) {
+    trainX[i] = train.getJSONObject(i*skip).getFloat("x");
+    trainY[i] = train.getJSONObject(i*skip).getFloat("y");
+  }
+}
