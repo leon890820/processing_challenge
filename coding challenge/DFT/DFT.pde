@@ -3,54 +3,86 @@ float time=0;
 int num=100;
 ArrayList<PVector> p;
 ArrayList<PVector> p1;
-float[] wa1=new float[500];
-float[] wa2=new float[500];
+float[] wa1;
+float[] wa2;
 float[][] fouriesX;
 float[][] fouriesY;
 
+ArrayList<PVector> userDraw;
+float USER=1;
+float DRAW=0;
+float state;
+
+
 
 void setup(){
-  for(int i=0;i<wa1.length;i+=1){
-    float m=map(i,0,100,0,2*PI);
-    wa1[i]=100*noise(m);
-    wa2[i]=100*noise(m+1000);
-  }
+  state=USER;
+  userDraw=new ArrayList<PVector>();
   size(800,400);
-  fouriesX=dft(wa1);
-  fouriesY=dft(wa2);
   p=new ArrayList<PVector>();
   //println(wave[6]);
 }
+void mousePressed(){
+  state=USER;
+  userDraw.clear();
+}
+
+void mouseReleased() {
+  state=DRAW;
+  wa1=new float[userDraw.size()];
+  wa2=new float[userDraw.size()];
+  for(int i=0;i<userDraw.size();i+=1){
+    
+    wa1[i]=userDraw.get(i).x;
+    wa2[i]=userDraw.get(i).y;
+  }
+  
+  fouriesX=dft(wa1);
+  fouriesY=dft(wa2);
+
+}
+
 
 void draw(){
   background(0);
-  
-  PVector locationX=epiCycle(50,200,PI/2,fouriesX);
-  PVector locationY=epiCycle(400,50,0,fouriesY);
-  PVector location=new PVector(locationY.x,locationX.y);
-  
-  p.add(location);
-  
-  stroke(255);
-  line(locationX.x,locationX.y,p.get(p.size()-1).x,p.get(p.size()-1).y);
-  line(locationY.x,locationY.y,p.get(p.size()-1).x,p.get(p.size()-1).y);
-  noFill();
-  stroke(255);
-  beginShape();
-  for(int i=0;i<p.size();i+=1){
-    vertex(p.get(i).x,p.get(i).y);
+
+  if(state==USER){
+    noFill();
+    userDraw.add(new PVector(mouseX-width/2,mouseY-height/2));
+    beginShape();
+    for(PVector v :userDraw){
+      vertex(v.x+width/2,v.y+height/2);
+    }
+    endShape();
   }
-  endShape();
-  // if(p.size()>500){
-  //   p.remove(0);
-  // }
-  
-  
-  float dt=2*PI/wa1.length;
-  time+=dt;
-  if(time>=2*PI){
-   time=0;
-   num+=1;
+  else if(state==DRAW){ 
+    PVector locationX=epiCycle(50,200,PI/2,fouriesX);
+    PVector locationY=epiCycle(400,50,0,fouriesY);
+    PVector location=new PVector(locationY.x,locationX.y);
+    
+    p.add(location);
+    
+    stroke(255);
+    line(locationX.x,locationX.y,p.get(p.size()-1).x,p.get(p.size()-1).y);
+    line(locationY.x,locationY.y,p.get(p.size()-1).x,p.get(p.size()-1).y);
+    noFill();
+    stroke(255);
+    beginShape();
+    for(int i=0;i<p.size();i+=1){
+      vertex(p.get(i).x,p.get(i).y);
+    }
+    endShape();
+    // if(p.size()>500){
+    //   p.remove(0);
+    // }
+    
+    
+    float dt=2*PI/wa1.length;
+    time+=dt;
+    if(time>=2*PI){
+    time=0;
+    num+=1;
+    }
   }
 }
 
@@ -103,13 +135,13 @@ PVector epiCycle(float _x, float _y,float theda,float[][] fouries){
   return location;
 
 }
-void loadTrain() {
-  JSONArray train = loadJSONObject("train.json").getJSONArray("drawing");
-  trainX = new float[train.size()/skip];
-  trainY = new float[train.size()/skip];
+//void loadTrain() {
+//  JSONArray train = loadJSONObject("train.json").getJSONArray("drawing");
+//  trainX = new float[train.size()/skip];
+//  trainY = new float[train.size()/skip];
 
-  for (int i = 0; i < train.size()/skip; i+= 1) {
-    trainX[i] = train.getJSONObject(i*skip).getFloat("x");
-    trainY[i] = train.getJSONObject(i*skip).getFloat("y");
-  }
-}
+//  for (int i = 0; i < train.size()/skip; i+= 1) {
+//    trainX[i] = train.getJSONObject(i*skip).getFloat("x");
+//    trainY[i] = train.getJSONObject(i*skip).getFloat("y");
+//  }
+//}
