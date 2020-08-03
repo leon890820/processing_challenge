@@ -18,13 +18,15 @@ float state;
 void setup(){
   state=USER;
   userDraw=new ArrayList<PVector>();
-  size(800,400);
+  size(800,800);
   p=new ArrayList<PVector>();
   //println(wave[6]);
 }
 void mousePressed(){
   state=USER;
   userDraw.clear();
+  p.clear();
+  time=0;
 }
 
 void mouseReleased() {
@@ -33,8 +35,8 @@ void mouseReleased() {
   wa2=new float[userDraw.size()];
   for(int i=0;i<userDraw.size();i+=1){
     
-    wa1[i]=userDraw.get(i).x;
-    wa2[i]=userDraw.get(i).y;
+    wa1[i]=userDraw.get(i).y;
+    wa2[i]=userDraw.get(i).x;
   }
   
   fouriesX=dft(wa1);
@@ -45,7 +47,7 @@ void mouseReleased() {
 
 void draw(){
   background(0);
-
+  println(userDraw.size());
   if(state==USER){
     noFill();
     userDraw.add(new PVector(mouseX-width/2,mouseY-height/2));
@@ -56,8 +58,8 @@ void draw(){
     endShape();
   }
   else if(state==DRAW){ 
-    PVector locationX=epiCycle(50,200,PI/2,fouriesX);
-    PVector locationY=epiCycle(400,50,0,fouriesY);
+    PVector locationX=epiCycle(50,height/2,PI/2,fouriesX);
+    PVector locationY=epiCycle(width/2,50,0,fouriesY);
     PVector location=new PVector(locationY.x,locationX.y);
     
     p.add(location);
