@@ -1,12 +1,19 @@
 class Box{
   PVector l;
   float r;
+  float c=0;
   Box(float x,float y,float z,float r_){
     l=new PVector(x,y,z);
     r=r_;
   }
   void show(){
+    float d=abs(l.x-radious/2)+abs(l.y-radious/2)+abs(l.z-radious/2);
+    c=map(d,0,radious*3,0,255);
+    c+=time;
+    
     pushMatrix();
+    colorMode(HSB);
+    fill(c%255,255,255);
     translate(l.x,l.y,l.z);
     box(r);
     popMatrix();
