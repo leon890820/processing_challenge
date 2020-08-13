@@ -1,11 +1,11 @@
 int rows,culs;
-int scl=10;
+int scl=12;
 float[][] terrain;
 float s=0;
 void setup(){
-  size(600,600,P3D);
-  rows=600/scl;
-  culs=600/scl;
+  size(800,800,P3D);
+  rows=1000/scl;
+  culs=1000/scl;
   terrain= new float[culs][rows];
   float xoff=0;
   for(int x=0;x<rows;x+=1){
@@ -23,7 +23,7 @@ void draw(){
   noFill();
   translate(width/2,width/2);
   rotateX(PI/3);
-  translate(-300,-300);
+  translate(-500,-500);
   for(int y=0;y<rows-1;y+=1){
     beginShape(TRIANGLE_STRIP);
     for(int x=0;x<culs;x+=1){
