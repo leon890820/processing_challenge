@@ -1,38 +1,37 @@
-class Box{
-  PVector l;
-  float r;
-  float c=0;
-  Box(float x,float y,float z,float r_){
-    l=new PVector(x,y,z);
-    r=r_;
+float a=0;
+Box b;
+float radious=400;
+float time=0;
+ArrayList<Box> sponge;
+void setup(){
+  size(800,800,P3D);
+  b=new Box(0,0,0,radious);
+  sponge=new ArrayList<Box>();
+  sponge.add(b);
+  mousePressed();
+  mousePressed();
+  mousePressed();
+}
+void draw(){
+  background(0);
+  noStroke();
+  //stroke(255);
+  //noFill();
+  lights();
+  translate(width/2,height/2);
+  rotateX(a);
+  rotateZ(a);
+  for(Box b:sponge){
+    b.show();
   }
-  void show(){
-    float d=abs(l.x-radious/2)+abs(l.y-radious/2)+abs(l.z-radious/2);
-    c=map(d,0,radious*3,0,255);
-    c+=time;
-    
-    pushMatrix();
-    colorMode(HSB);
-    fill(c%255,255,255);
-    translate(l.x,l.y,l.z);
-    box(r);
-    popMatrix();
-  }
-  ArrayList<Box> generate(){
-    ArrayList<Box> boxes=new ArrayList<Box>();
-    for(int x=-1;x<2;x+=1){
-      for(int y=-1;y<2;y+=1){
-        for(int z=-1;z<2;z+=1){
-          float newR=r/3;
-          if(abs(x)+abs(y)+abs(z)>1){
-             Box b=new Box(l.x+newR*x,l.y+newR*y,l.z+newR*z,newR);
-             boxes.add(b);
-          }
-        }
-      }
-    }
-    return boxes;
-  }
+  a+=0.01;
+  time+=0.05*255/(2*PI);
   
-    
+}
+void mousePressed(){
+  ArrayList<Box> next=new ArrayList<Box>();
+  for(int i=0;i<sponge.size();i+=1){
+    next.addAll(sponge.get(i).generate());
+  }
+  sponge=next;
 }
