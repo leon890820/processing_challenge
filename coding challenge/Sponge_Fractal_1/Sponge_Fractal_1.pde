@@ -1,15 +1,21 @@
 float a=0;
 Box b;
+float radious=400;
+float time=0;
 ArrayList<Box> sponge;
 void setup(){
-  size(500,500,P3D);
-  b=new Box(0,0,0,200);
+  size(800,800,P3D);
+  b=new Box(0,0,0,radious);
   sponge=new ArrayList<Box>();
   sponge.add(b);
+  mousePressed();
+  mousePressed();
+  mousePressed();
 }
 void draw(){
   background(0);
-  stroke(255);
+  noStroke();
+  //stroke(255);
   //noFill();
   lights();
   translate(width/2,height/2);
@@ -19,6 +25,8 @@ void draw(){
     b.show();
   }
   a+=0.01;
+  time+=0.05*255/(2*PI);
+  
 }
 void mousePressed(){
   ArrayList<Box> next=new ArrayList<Box>();
