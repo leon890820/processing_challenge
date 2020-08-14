@@ -26,11 +26,14 @@ void draw(){
     for(int j=1;j<height-1;j+=1){
       current[i][j]=(previous[i+1][j]+previous[i-1][j]+previous[i][j+1]+previous[i][j-1])/2-current[i][j];
       current[i][j]*=damping;
-      float m=map(j,0,rows,height*(1-s)/2,height*(1+s)/2);
-      
-      int index=i+(int)m*width; 
-      //if(width*height/3<index&&index<width*height/2)  
-      pixels[index]=color(current[i][j]);
+      float r=map(j,0,height,height*4/3,height);
+      float mx=map(i,0,cols,(width-r)/2,(width+r)/2);
+      float my=map(j,0,rows,height*(1-s)/2,height*(1+s)/2);
+      if(mx>0 && mx<width){
+        int index=(int)mx+(int)my*width; 
+        //if(width*height/3<index&&index<width*height/2)  
+        pixels[index]=color(current[i][j]);
+      }
      
     }
   }  
