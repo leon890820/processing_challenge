@@ -7,26 +7,23 @@ class water{
   float precy;
   float mass;
   water(){
-    location=new PVector(random(-200,width-200),random(0,height),random(300,1000));
-    cy=map(location.y,0,height,height*(1-s)/2,height*(1+s)/2);
+    location=new PVector(random(-500,width-200),random(0,height),random(800,1500));
+    cy=map(location.y,0,height,height*(1-s),height);
     precy=cy;
     prelocation=location;
     velocity=new PVector(0,0,0);
-    acceleration=new PVector(0.2,0,-0.8);
+    acceleration=new PVector(0.3,0,-0.8);
     mass=random(1,5);
   }
   void run(){
     show();
-    drop();
-    
-  
+    drop(); 
   }
   void show(){
     float a=map(location.y,0,height,100,255);
     stroke(255,255,255,a);
-    line(location.x,cy-location.z,prelocation.x,precy-prelocation.z);
-    
-    
+    strokeWeight(1);
+    line(location.x,cy-location.z,prelocation.x,precy-prelocation.z);   
   }
   
   void drop(){
