@@ -3,9 +3,10 @@ class lightning{
   ArrayList<branch> branches;
   PVector dir;
   float len=1;
+  float time=255;
   lightning(){
     dir=new PVector(0,1);
-    pos = new PVector(width/2,0);
+    pos = new PVector(random(0,width),0);
     branches=new ArrayList<branch>();
     branches.add(new branch(pos,null,dir,1000));
   }
@@ -14,9 +15,9 @@ class lightning{
       grow();
     }
     for(branch b:branches){
-      b.show();
+      b.show(time);
     }
-    
+    time-=5;
   }
   
   void grow(){

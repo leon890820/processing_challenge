@@ -12,7 +12,7 @@ class branch{
     energy=_energy;
     
   }
-  void show(){
+  void show(float time){
     stroke(255,time);
     float w=map(energy,0,1000,0,4);
     strokeWeight(w);
