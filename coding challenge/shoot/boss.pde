@@ -3,9 +3,10 @@ class boss{
   PVector velocity;
   float Hindex=0;
   boolean change=false;
-  float hp=10000;
-  boolean tutor1=false;
-  boolean tutor2=false;
+  boolean fuze=false;
+  float hp=5000;
+  boolean skill=false;
+  float skilltime=0;
   boss(){
     location=new PVector(width/2,-100);
     velocity=new PVector(0,1);
@@ -16,7 +17,7 @@ class boss{
     update();
     bedamage();
     death();
-    tutor();
+    playerdeath();
     fill(255,0,0);
     text("hp:"+str((int)hp),location.x-20,location.y-150);
   }
@@ -33,7 +34,7 @@ class boss{
     if(location.y<200){
       state1();
     }
-    else {
+    else if(hp>2500) {
       if(change==false){
         velocity=new PVector(2,0);
         change=true;
@@ -41,11 +42,21 @@ class boss{
     state2();
     killweakmonster();
     }
+    else{
+      fuze=true;
+      state3();
+    }
   }
   void state1(){
     location.add(velocity);
   }
   void state2(){
+    if(location.x<50||location.x>width-50){
+      velocity.mult(-1);
+    }
+    location.add(velocity);
+  }
+  void state3(){
     if(location.x<50||location.x>width-50){
       velocity.mult(-1);
     }
@@ -93,25 +104,33 @@ class boss{
   
   void death(){
     if(hp<=0){
-      bosses.remove(0);  
+      bosses.remove(0);
+      bosscome=false;
+      bossdeath=true;
     }
   }
-  void tutor(){
-    fill(255);
-    textSize(20);
-    if(tutor1){
-      text("press space to change to handmode",width/2-100,height/2);
-      if(key==' '){
-        tutor1=false;
-        tutor2=true;
-      }
+  void playerdeath(){
+    if(v.playerisdeath()){
+      PVector target=PVector.sub(v.location,location);
+        target.normalize();
+        target.mult(20);
+        bossbullets.add(new bossbullet(location.x,location.y,target.x,target.y));
     }
-    else if(tutor2){
-      text("press A and D to rotate your bullets",width/2-100,height/2);
-      if(key=='A'||key=='a'||key=='D'||key=='d'){
-        tutor2=false;
-      }
-    }
+  }
+  void bossSkill(){
+    
+    skill1();
+    skill2();
+    skill3();
+  }
+  void skill1(){
+  
+  }
+  void skill2(){
+  
+  }
+  void skill3(){
+  
   }
   
 }

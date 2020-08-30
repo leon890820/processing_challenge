@@ -16,6 +16,7 @@ boolean autoattack=true;
 PImage[] HGUboss=new PImage[20];
 float score=0;
 boolean bosscome=false;
+boolean bossdeath=false;
 void setup(){
   size(1000,1000);
   background(0);
@@ -74,7 +75,7 @@ void drawline(){
     path.mult(10);
     if(cd>cdt){
       cd=0;
-      bullets.add(new bullet(v.location.x,v.location.y,path.x,path.y));
+      bullets.add(new bullet(v.location.x,v.location.y,path.x+enemys.get(index).velocity.x,path.y+enemys.get(index).velocity.y));
     }
   }
 }
@@ -148,11 +149,10 @@ void score(){
   text((int)v.hp,v.location.x-10,v.location.y-20);
 }
 void summonboss(){
-  if(score>100){
+  if(score>100&&bossdeath==false){
     bosscome=true;
     if(bt<=0){
       bosses.add(new boss());
-      bosses.get(0).tutor1=true;
     }
     bt+=1;
   }

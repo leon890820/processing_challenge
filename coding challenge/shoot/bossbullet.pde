@@ -12,7 +12,7 @@ class bossbullet {
     
   }
   void show(){
-    fill(0,255,0);
+    fill(0,0,255);
     noStroke();
     circle(location.x,location.y,10);
   }

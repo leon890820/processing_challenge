@@ -13,7 +13,7 @@ class bullet{
     if(attackdamage<0) attackdamage=0;
   }
   void show(){
-    fill(255,0,0);
+    fill(0,255,0);
     noStroke();
     circle(location.x,location.y,10);
   }
