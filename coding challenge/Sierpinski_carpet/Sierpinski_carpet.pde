@@ -1,7 +1,7 @@
 square s;
 ArrayList<square> ss;
 void setup(){
-  size(500,500,P2D);
+  size(500,500);
   s=new square(0,0,400);
   ss=new ArrayList<square>();
   ss.add(s);

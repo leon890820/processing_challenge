@@ -1,4 +1,4 @@
-nueralnetwork nn=new nueralnetwork(2,5,3);
+nueralnetwork nn=new nueralnetwork(2,6,3);
 float[][][][] p=new float[4][2][][];
 
 void setup(){
@@ -6,13 +6,13 @@ void setup(){
   background(0);
   
   float[][] a1={{0,0}};
-  float[][] g1={{random(1),random(1),random(1)}};
+  float[][] g1={{0,0,0}};
   float[][] a2={{0,1}};
-  float[][] g2={{random(1),random(1),random(1)}};
+  float[][] g2={{1,1,1}};
   float[][] a3={{1,0}};
-  float[][] g3={{random(1),random(1),random(1)}};
+  float[][] g3={{1,1,1}};
   float[][] a4={{1,1}};
-  float[][] g4={{random(1),random(1),random(1)}};
+  float[][] g4={{0,0,0}};
   p[0][0]=a1;
   p[0][1]=g1;
   p[1][0]=a2;
@@ -26,7 +26,7 @@ void setup(){
   //print(nn.Feedforward(p[0][0]).m1[0][0]+"\n");
   //print(nn.Feedforward(p[1][0]).m1[0][0]+"\n");
   //print(nn.Feedforward(p[2][0]).m1[0][0]+"\n");
-  //print(nn.Feedforward(p[3][0]).m1[0][0]+"\n");
+ // print(nn.Feedforward(p[3][0]).m1[0][0]+"\n");
   //nn.Feedforward(a);
   //text(nn.output.m1[0][0],width/2,height/2);
   /*
@@ -44,7 +44,7 @@ void draw(){
     int g =(int)random(0,4);
     nn.train(p[g][0],p[g][1]);
   }
-  float resolution=1;
+  float resolution=5;
   float culs=width/resolution;
   float rows=height/resolution;
   

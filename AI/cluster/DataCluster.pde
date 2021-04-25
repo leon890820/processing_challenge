@@ -18,7 +18,7 @@ class DataCluster{
     
     calCenter();
     for(DataPoint dp:dataCluster){
-      label+=str(dp.label)+" ";
+      label+=(dp.name)+" ";
     }
     childA=A;
     childB=B;

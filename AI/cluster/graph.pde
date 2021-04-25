@@ -32,7 +32,7 @@ class EvolutionGraph extends PApplet {
           noFill();
           String s="";
           for (int j=0; j<recordClusters[k+1][i].dataCluster.size(); j+=1) {
-            s+=str(recordClusters[k+1][i].dataCluster.get(j).label)+" ";
+            s+=(recordClusters[k+1][i].dataCluster.get(j).name)+" ";
           }
           fill(dc.clusterColor, 100);
           ellipse(dc.location.x, dc.location.y, max(width*0.8/dataPoints.length,s.length()*8), 20);

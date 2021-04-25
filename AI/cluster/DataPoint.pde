@@ -1,9 +1,11 @@
 class DataPoint{
   float[] dataSheet=new float[dataSheetNum];
   int label;
-  DataPoint(float[] d,int l){
+  String name;
+  DataPoint(float[] d,int l,String _name){
     dataSheet=d;
     label=l;
+    name=_name;
   }
   
   void show(){

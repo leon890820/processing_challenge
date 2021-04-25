@@ -1,7 +1,8 @@
-int dataSheetNum=2;
-int dataNum=30;
-int iteration=29;
+int dataSheetNum=11;
+int dataNum=23;
+int iteration=20;
 DataPoint[] dataPoints=new DataPoint[dataNum];
+String[] acupointsData;
 ArrayList<DataCluster> dataClusters;
 EvolutionGraph clusterGraph;
 DataCluster[][] recordClusters=new DataCluster[iteration+1][];
@@ -9,14 +10,16 @@ void settings() {
   size(600, 600);
 }
 void setup() {
-
+  acupointsData=loadStrings("acupointData.txt");
   dataClusters=new ArrayList<DataCluster>();
   for (int i=0; i<dataPoints.length; i+=1) {
     float[] d=new float[dataSheetNum];
+    String[] data=acupointsData[i].split(" ");
     for (int j=0; j<d.length; j+=1) {
-      d[j]=random(0, width);
+      
+      d[j]=float(data[j+1]);
     }
-    dataPoints[i]=new DataPoint(d, i);
+    dataPoints[i]=new DataPoint(d, i,data[0]);
   }
   for (int i=0; i<dataPoints.length; i+=1) {
     DataPoint[] DP={dataPoints[i]};

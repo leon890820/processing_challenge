@@ -197,6 +197,5 @@ class net {
   }
 
 
-  void addhidden() {
-  }
+  
 }

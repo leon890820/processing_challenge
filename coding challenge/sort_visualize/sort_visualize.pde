@@ -2,7 +2,7 @@ import processing.sound.*;
 Sound s;
 SinOsc sin = new SinOsc(this);
 String[] al={"Bubble Sort", "Cocktail Shaker Sort", "Gnome Sort", "Odd-Even Sort", "Quick Sort"};
-int AC=4;
+int AC=0;
 float num=100;
 float w;
 float h;

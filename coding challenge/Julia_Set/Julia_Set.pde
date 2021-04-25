@@ -1,7 +1,7 @@
 float angle = 0;
 
 void setup() {
-  size(640, 640);
+  size(640, 360);
   colorMode(HSB, 1);
 }
 void draw() {
@@ -9,8 +9,8 @@ void draw() {
   // float ca = map(mouseX, 0, width, -1, 1);//-0.70176;
   // float cb = map(mouseY, 0, height, -1, 1);//-0.3842;
 
-  float ca = cos(angle*3);//sin(angle);
-  float cb = sin(angle*5);
+  float ca = cos(angle*3.213);//sin(angle);
+  float cb = sin(angle);
 
   angle += 0.02;
 
