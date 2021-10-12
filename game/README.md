@@ -6,7 +6,7 @@
 
 ## SAT
 
-<img src='https://media.giphy.com/media/RG0FKir7mx11y1AI0v/giphy.gif'>
+<img src='https://media.giphy.com/media/XShhP47dLuMFv1S5Bx/giphy.gif'>
 
 ## QuadTree
 
