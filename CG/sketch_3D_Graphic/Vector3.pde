@@ -70,6 +70,12 @@ static class Vector3{
     y/=r;
     z/=r;
   }
+  public void perspective(){
+    this.x/=h;
+    this.y/=h;
+    this.z/=h;
+    this.h=1;
+  }
   public Vector3 norm() {
     float r=length();
     return new Vector3(x/r,y/r,z/r);

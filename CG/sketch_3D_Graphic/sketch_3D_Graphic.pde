@@ -6,25 +6,23 @@ float[] dz;
 int[] cz;
 ArrayList<Light> lights;
 Camera cam;
-PImage gura_texture;
-int type=0;
-
+int type=3;
+float a=0;
 
 ArrayList<Mesh> meshes;
 void settings() {
-  size(1000, 1000);
+  size(600, 600);
   cam=new Camera(new Vector3(10, -100, 10), new Vector3(0, 0, 0));
 }
 void setup() {
 
-  background(0);
-  gura_texture=loadImage("GuraTexture.png");
+  background(0);  
   //cam=new Camera();
   lights=new ArrayList<Light>();
   background_color=new Vector3(0.7*255, 0.8*255, 1*255);
   kala=new Vector3(0.9, 0.9, 0.9);
-  lights.add(new Light(new Vector3(0.2, 0.2, 0.2), new Vector3(0, 100, 100)));
-
+  
+  initLight();
 
   dz=new float[width*height];
   cz=new int[width*height];
@@ -41,30 +39,22 @@ void setup() {
     setDragon();
     break;
   case 2:
+    cam=new Camera(new Vector3(2, 1, 2), new Vector3(0, 0, 0));
+    setCube();
+  case 3:
+    cam=new Camera(new Vector3(4, 4, 4), new Vector3(0, 0, 0));
+    setSphere();
+  
   }
-  //setScence();
-  //setDragon();
 
-  for (Mesh m : meshes) {
-    for (int i=0; i<m.verties.length; i+=1) {
-      Vector3 v=new Vector3(m.verties[i].x, m.verties[i].y, m.verties[i].z);
 
-      Vector3 p=Matrix.mult(v, EMPM_matrix);
-
-      m.verties[i]=new Vector3(p.x/p.h, p.y/p.h, p.z/p.h);
-    }
-    m.initNormalVector();
-  }
+  
 
   for (Mesh m : meshes) {
     //m.show();
     m.zBuffer();
   }
 
-
-  //mesh=new Mesh(verties,triangle,number);
-  //mesh.zBuffer();
-  //mesh.show();
   loadPixels();
   for (int i=0; i<dz.length; i+=1) {
     if (dz[i]==1.0/0.0) cz[i]=color(background_color.x, background_color.y, background_color.z);
@@ -73,51 +63,56 @@ void setup() {
   updatePixels();
   saveFrame("picture.png");
 }
+void initLight(){
+  lights.clear();
+  lights.add(new Light(new Vector3(0.6, 0.6, 0.6), new Vector3(-2, -2, -2)));
+  //lights.add(new Light(new Vector3(0.6, 0.6, 0.6), new Vector3(0, 2, 0)));
+}
+
 void addMeshObject(String s, Vector3 O, float Kd, float Ks, float N) {
   Vector3[] verties;
   int[] triangle;
-  int[] number;
-  Vector3[] uv;
-  int vs, ts, vt;
+  int vs, ts;
   String[] object=loadStrings(s);
   String[] vts=object[0].split(" ");
   vs=int(vts[0]);
   ts=int(vts[1]);
 
   verties=new Vector3[vs];
-  number=new int[ts];
+  
 
   for (int i=0; i<vs; i+=1) {
     String[] pv=object[i+1].split(" ");
     if (pv[0].equals("")) {
       verties[i]=new Vector3(float(pv[1]), float(pv[2]), float(pv[3]));
-      //println(pv[1],float(pv[2]),float(pv[3]));
     } else {
       verties[i]=new Vector3(float(pv[0]), float(pv[1]), float(pv[2]));
-      //println(pv[0],float(pv[1]),float(pv[2]));
     }
   }
   int triangleIndex=0;
   int sum=0;
   for (int i=0; i<ts; i+=1) {
     String[] tv=object[i+1+vs].split(" ");
-    sum+=int(tv[0]);
+    sum+=(int(tv[0])-2);
   }
-  triangle=new int[sum];
+  triangle=new int[sum*3];
   for (int i=0; i<ts; i+=1) {
     String[] tv=object[i+1+vs].split(" ");
-    number[i]=int(tv[0]);
-    for (int j=0; j<int(tv[0]); j+=1) {
-      triangle[triangleIndex+j]=int(tv[j+1])-1;
+    
+    
+    for(int k=0;k<int(tv[0])-2;k+=1){
+      triangle[triangleIndex]=int(tv[1])-1;
+      for (int j=0; j<2; j+=1) {
+        triangle[triangleIndex+1+j]=int(tv[j+2+k])-1;
+      }
+      triangleIndex+=3;
     }
-    triangleIndex+=int(tv[0]);
+    
+    
+    
   }
 
-
-
-
-
-  meshes.add(new Mesh(verties, triangle, number, null, null, O, Kd, Ks, N,null,null));
+  meshes.add(new Mesh(verties, triangle, null, null, new ShadeParameter(O, Kd, Ks, N),null,null,transform_matrix));
 }
 
 
@@ -150,11 +145,8 @@ void addobjMeshObject(String s, Vector3 O, float Kd, float Ks, float N) {
     String[] pv=object[i+1].split(" ");
     if (pv[0].equals("v")) {
       verties[i]=new Vector3(float(pv[1]), float(pv[2]), float(pv[3]));
-
-      //println(pv[1],float(pv[2]),float(pv[3]));
     } else {
       verties[i]=new Vector3(float(pv[1]), float(pv[2]), float(pv[3]));
-      //println(pv[0],float(pv[1]),float(pv[2]));
     }
   }
   int triangleIndex=0;
@@ -170,8 +162,7 @@ void addobjMeshObject(String s, Vector3 O, float Kd, float Ks, float N) {
       c+=1;
     } 
   }
-  
-  //println(sum);
+
   number=new int[sum];
   triangle=new int[sum*3];
   uv_triangle=new int[sum*3];
@@ -200,12 +191,7 @@ void addobjMeshObject(String s, Vector3 O, float Kd, float Ks, float N) {
     
   }
  
-  for (int i=0; i<verties.length; i+=1) {
-    Vector3 v=new Vector3(verties[i].x, verties[i].y, verties[i].z);
-    Vector3 p=Matrix.mult(v, transform_matrix);
-
-    verties[i]=p.copy();
-  }
+  
 
   for (int i=0; i<uv.length; i+=1) {
     String[] pv=object[i+1+vs+ts].split(" ");
@@ -218,27 +204,49 @@ void addobjMeshObject(String s, Vector3 O, float Kd, float Ks, float N) {
       //println(pv[0],float(pv[1]),float(pv[2]));
     }
   }
+  
+  meshes.add(new Mesh(verties, triangle, uv, uv_triangle,new ShadeParameter(O, Kd, Ks, N) ,tc,texture_name,transform_matrix));
+}
+void setCube(){
+  EMPM_matrix=EM(cam.eye_position, cam.view_location, cam.up_vector, 0);
+  EMPM_matrix=Matrix.mult(EMPM_matrix, PM(0.1, 1000, 20));
+  
+  
+  //transform_matrix=rotation_z(a);
+  addMeshObject("cube.asc",new Vector3(0.5, 0.9, 0.5), 0.7, 0.3, 10);
+  
+  
+}
 
-
-  //println(uv_triangle[uv_triangle.length-3],uv_triangle[uv_triangle.length-2],uv_triangle[uv_triangle.length-1]);
-  meshes.add(new Mesh(verties, triangle, number, uv, uv_triangle, O, Kd, Ks, N,tc,texture_name));
+void setSphere(){
+  EMPM_matrix=EM(cam.eye_position, cam.view_location, cam.up_vector, 0);
+  EMPM_matrix=Matrix.mult(EMPM_matrix, PM(0.1, 1000, 20));
+   
+  //transform_matrix=rotation_z(a);
+  addMeshObject("sphere.asc",new Vector3(0.5, 0.9, 0.5), 0.7, 0.3, 1);
+  
+  
 }
 
 void setGura() {
-  addobjMeshObject("gura.txt", new Vector3(0.9, 0.9, 0.9), 0.7, 0.3, 50);
   EMPM_matrix=EM(cam.eye_position, cam.view_location, cam.up_vector, 0);
   EMPM_matrix=Matrix.mult(EMPM_matrix, PM(0.1, 1000, 20));
+  
+  addobjMeshObject("gura.txt", new Vector3(0.9, 0.9, 0.9), 0.7, 0.3, 50);
+  
 }
 
-void setDragon() {
-  addobjMeshObject("dragon.txt", new Vector3(0.9, 0.9, 0.9), 0.7, 0.3, 50);
+void setDragon() {  
   EMPM_matrix=EM(cam.eye_position, cam.view_location, cam.up_vector, 0);
   EMPM_matrix=Matrix.mult(EMPM_matrix, PM(0.1, 1000, 20));
+  
+  addobjMeshObject("dragon.txt", new Vector3(0.9, 0.9, 0.9), 0.7, 0.3, 50);
 }
 
 
 void setScence() {
-
+  EMPM_matrix=EM(cam.eye_position, cam.view_location, cam.up_vector, 0);
+  EMPM_matrix=Matrix.mult(EMPM_matrix, PM(0.1, 1000, 20));
 
   transform_matrix=scaling_matrix(new Vector3(0.7, 0.7, 0.7));
   transform_matrix=Matrix.mult(transform_matrix, translate_matrix(new Vector3(1.7, 1.3, -0.5)));
@@ -326,8 +334,7 @@ void setScence() {
 
 
 
-  EMPM_matrix=EM(cam.eye_position, cam.view_location, cam.up_vector, 0);
-  EMPM_matrix=Matrix.mult(EMPM_matrix, PM(0.1, 1000, 20));
+  
   //light.location=Matrix.mult(light.location, EMPM_matrix);
 }
 
@@ -385,27 +392,37 @@ Matrix identity_matrix() {
 }
 
 
-//void solA() {
-//  transform_matrix=translate_matrix(Vector3.mult(point1, -1));
-//  Vector3 p2=Matrix.mult(point2, transform_matrix);
-//  transform_matrix=Matrix.mult(transform_matrix, rotation_y(atan2(p2.x, p2.z)));
-//  p2=Matrix.mult(point2, transform_matrix);
-//  float L=p2.length();
-//  transform_matrix=Matrix.mult(transform_matrix, rotation_x(asin(p2.y/L)));
-//  p2=Matrix.mult(point3, transform_matrix);
-//  transform_matrix=Matrix.mult(transform_matrix, rotation_z(atan2(p2.x, p2.y)));
-//}
 
 void draw() {
-  //background(200);
-  //for(Mesh m:meshes){
-  //  m.drawUV();
-  //}
+  background(200);
+  //lights.clear();
+  //lights.add(new Light(new Vector3(0.6, 0.6, 0.6), new Vector3(cos(a)*5, sin(a)*5, 0)));
+  
+  a+=0.1;
+  
+  initdzcz();
+  transform_matrix=rotation_x(a*0.3);
+//transform_matrix=Matrix.mult(rotation_y(a*0.5),transform_matrix);
+  //transform_matrix=Matrix.mult(rotation_z(-a*0.4),transform_matrix);
+  for(Mesh m:meshes){
+    m.transform_matrix=transform_matrix.copy();
+    m.reload();
+    m.zBuffer();
+  }
+  
+  
+  
   loadPixels();
   for (int i=0; i<dz.length; i+=1) {
+    if (dz[i]==1.0/0.0) cz[i]=color(background_color.x, background_color.y, background_color.z);
     pixels[i]=cz[i];
   }
   updatePixels();
+  
+  String txt_fps = String.format(getClass().getName()+ " [frame %d]   [fps %6.2f]", frameCount, frameRate);
+  surface.setTitle(txt_fps);
+  
+  
   text(str(mouseX)+" "+str(mouseY), mouseX, mouseY);
   float speed=10;
   if (keyPressed) {
@@ -421,29 +438,10 @@ void draw() {
     if (key=='s'|| key=='S') {
       cam.eye_position.y+=0.1*speed;
     }
-    setNewPort();
+    
   }
 }
-void setNewPort() {
-  initdzcz();
-  setup();
-  EMPM_matrix=EM(cam.eye_position, cam.view_location, cam.up_vector, 0);
-  EMPM_matrix=Matrix.mult(EMPM_matrix, PM(0.1, 1000, 20));
-  for (Mesh m : meshes) {
-    for (int i=0; i<m.verties.length; i+=1) {
-      Vector3 v=new Vector3(m.verties[i].x, m.verties[i].y, m.verties[i].z);
-      Vector3 p=Matrix.mult(v, EMPM_matrix);
 
-      m.verties[i]=new Vector3(p.x/p.h, p.y/p.h, p.z/p.h);
-    }
-    m.initNormalVector();
-  }
-
-  for (Mesh m : meshes) {
-    //m.show();
-    m.zBuffer();
-  }
-}
 
 void mouseDragged() {
   float px=mouseX-pmouseX;

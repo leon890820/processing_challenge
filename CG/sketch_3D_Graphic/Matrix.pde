@@ -50,6 +50,13 @@ static class Matrix{
     }
     return new Matrix(vs);
   }
+  Matrix copy(){
+    Vector3[] v=new Vector3[4];
+    for(int i=0;i<v.length;i+=1){
+      v[i]=vectors[i].copy();
+    }
+    return new Matrix(v);  
+  }
   
   @Override
   String toString(){
